@@ -2,8 +2,8 @@ require "rubygems"
 require "rake"
 require "echoe"
 
-Echoe.new("devise_koala_connectable", "0.1.1") do |p|
-  p.description = "Facebook authentification with koala for devise"
+Echoe.new("devise_koala_connectable", "0.1.2") do |p|
+  p.description = "Rails gem for adding Facebook authentification capabillity to devise using koala"
   p.url         = "http://github.com/webmatze/devise_koala_connectable"
   p.author      = "Mathias Karstädt"
   p.email       = "mathias.karstaedt@gmail.com"
