@@ -1,0 +1,5 @@
+= devise_koala_connectable
+
+Rails gem for adding Facebook authentification capabillity to devise using koala
+
+Copyright (C) 2011 by Mathias Karstädt

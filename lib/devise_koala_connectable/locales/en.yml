@@ -1,0 +1,4 @@
+en:
+  devise:
+    sessions:
+      koala_invalid: "Could not login. Invalid account."
