@@ -33,13 +33,13 @@ module Devise #:nodoc:
       # Store Koala account/session credentials.
       #
       def store_koala_credentials!(attributes = {})
-        self.send(:"#{self.class.koala_identifier_field}=", attributes[:identifier])
+        self.send(:"#{self.class.koala_identifier_field}=", attributes["id"])
 
         # Confirm without e-mail - if confirmable module is loaded.
         self.skip_confirmation! if self.respond_to?(:skip_confirmation!)
 
         # Only populate +email+ field if it's available (e.g. if +authenticable+ module is used).
-        self.email = attributes[:email] || '' if self.respond_to?(:email)
+        self.email = attributes["email"] || '' if self.respond_to?(:email)
 
         # Lazy hack: These database fields are required if +authenticable+/+confirmable+
         # module(s) is used. Could be avoided with :null => true for authenticatable
@@ -130,8 +130,8 @@ module Devise #:nodoc:
         # Authenticate a user based on Facebook Identifier.
         #
         def authenticate_with_koala(attributes = {})
-          if attributes[:identifier].present?
-            self.find_for_koala(attributes[:identifier])
+          if attributes["id"].present?
+            self.find_for_koala(attributes["id"])
           end
         end
 
