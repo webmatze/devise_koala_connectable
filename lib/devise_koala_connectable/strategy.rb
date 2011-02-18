@@ -11,7 +11,7 @@ module Devise #:nodoc:
       class KoalaConnectable < Base
 
         def valid?
-          valid_controller? && valid_params? && mapping.to.respond_to?('authenticate_with_koala')
+          valid_controller? && mapping.to.respond_to?('authenticate_with_koala')
         end
 
         # Authenticate user with Koala.
@@ -25,12 +25,12 @@ module Devise #:nodoc:
             oauth = Koala::Facebook::OAuth.new(klass.koala_app_id, klass.koala_secret_key, klass.koala_callback_url)
             
             user_info = oauth.get_user_info_from_cookies(request.cookies)
-            Rails.logger.info user_info.to_yaml
+            Rails.logger.debug user_info.to_yaml
 
             graph = Koala::Facebook::GraphAPI.new(user_info["access_token"])
             koala_user = graph.get_object(user_info["uid"])
             
-            Rails.logger.info koala_user.to_yaml
+            Rails.logger.debug koala_user.to_yaml
 
             fail!(:koala_invalid) and return unless koala_user
             
@@ -59,10 +59,6 @@ module Devise #:nodoc:
         protected
           def valid_controller?
             params[:controller].to_s =~ /sessions/
-          end
-
-          def valid_params?
-            params[:code].present?
           end
 
       end

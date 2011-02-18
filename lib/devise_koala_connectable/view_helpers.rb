@@ -51,6 +51,19 @@ module Devise #:nodoc:
         "<fb:login-button>#{button_text}</fb:login-button>"
       end
       
+
+      # Returns the Logout button for Facebook.
+      # It calls the logout_url after logging out of Facbook Connect.
+      #
+      # For example :
+      # ...
+      # <%= koala_logout_button("Logout","/logout") %>
+      #
+      def koala_logout_button(button_text = "Logout", logout_url = "/", options = {})
+        options = { :unobtrusive => true, :onclick => "FB.logout(function(response){document.location.href='#{logout_url}'})" }.merge(options)
+        link_to button_text, "#", options
+      end
+      
     end
   end
 end

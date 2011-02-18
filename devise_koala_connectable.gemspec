@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{devise_koala_connectable}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Mathias Karst\303\244dt"]
-  s.date = %q{2011-02-17}
+  s.date = %q{2011-02-18}
   s.description = %q{Rails gem for adding Facebook authentification capabillity to devise using koala}
   s.email = %q{mathias.karstaedt@gmail.com}
   s.extra_rdoc_files = ["README.rdoc", "lib/devise_koala_connectable.rb", "lib/devise_koala_connectable/locales/de.yml", "lib/devise_koala_connectable/locales/en.yml", "lib/devise_koala_connectable/model.rb", "lib/devise_koala_connectable/schema.rb", "lib/devise_koala_connectable/strategy.rb", "lib/devise_koala_connectable/version.rb", "lib/devise_koala_connectable/view_helpers.rb"]

@@ -26,6 +26,7 @@ module Devise
 
   mattr_accessor :koala_callback_url
   @@koala_callback_url = nil
+  
 end
 
 I18n.load_path.unshift File.join(File.dirname(__FILE__), *%w[devise_koala_connectable locales en.yml])
