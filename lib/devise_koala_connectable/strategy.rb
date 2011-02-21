@@ -35,7 +35,7 @@ module Devise #:nodoc:
             
             Rails.logger.debug koala_user.to_yaml
 
-            fail!(:koala_invalid) and return unless koala_user
+            fail(:koala_invalid) and return unless koala_user
             
             if user = klass.authenticate_with_koala(koala_user)
               user.on_before_koala_success(koala_user)
@@ -43,7 +43,7 @@ module Devise #:nodoc:
               return
             end
             
-            fail!(:koala_invalid) and return unless klass.koala_auto_create_account?
+            fail(:koala_invalid) and return unless klass.koala_auto_create_account?
             
             user = klass.new
             user.store_koala_credentials!(koala_user)
@@ -55,7 +55,7 @@ module Devise #:nodoc:
             
           rescue Exception => e
             Rails.logger.error e.to_yaml
-            fail!(:koala_invalid)
+            fail(:koala_invalid)
           end
         end
         
