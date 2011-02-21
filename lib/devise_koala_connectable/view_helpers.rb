@@ -60,7 +60,7 @@ module Devise #:nodoc:
       # <%= koala_logout_button("Logout","/logout") %>
       #
       def koala_logout_button(button_text = "Logout", logout_url = "/", options = {})
-        options = { :unobtrusive => true, :onclick => "FB.getLoginStatus(function(status){if(status.session){FB.logout(function(response){document.location.href='#{logout_url}'});}else{document.location.href='#{logout_url}'})" }.merge(options)
+        options = { :unobtrusive => true, :onclick => "FB.getLoginStatus(function(status){if(status.session){FB.logout(function(response){document.location.href='#{logout_url}'});}else{document.location.href='#{logout_url}'}})" }.merge(options)
         link_to button_text, "#", options
       end
       
