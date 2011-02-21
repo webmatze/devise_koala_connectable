@@ -45,10 +45,10 @@ module Devise #:nodoc:
       # 
       # For example :
       # ...
-      # <%= koala_login_button("Login with Facebook") %>
+      # <%= koala_login_button("Login with Facebook", "/after_login") %>
       #
-      def koala_login_button(button_text = "Login with Facebook")
-        "<fb:login-button>#{button_text}</fb:login-button>"
+      def koala_login_button(button_text = "Login with Facebook", login_url = "/")
+        "<fb:login-button onlogin=\"window.location.href = '#{login_url}';\">#{button_text}</fb:login-button>"
       end
       
 
@@ -57,7 +57,7 @@ module Devise #:nodoc:
       #
       # For example :
       # ...
-      # <%= koala_logout_button("Logout","/logout") %>
+      # <%= koala_logout_button("Logout","/after_logout") %>
       #
       def koala_logout_button(button_text = "Logout", logout_url = "/", options = {})
         options = { :unobtrusive => true, :onclick => "FB.getLoginStatus(function(status){if(status.session){FB.logout(function(response){document.location.href='#{logout_url}'});}else{document.location.href='#{logout_url}'}})" }.merge(options)
