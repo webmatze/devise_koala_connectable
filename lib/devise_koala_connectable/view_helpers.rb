@@ -40,6 +40,25 @@ module Devise #:nodoc:
         </script>"
       end
       
+      # Renders the Facbook Registration Form.
+      # For more info: http://developers.facebook.com/docs/plugins/registration/
+      # 
+      # For example :
+      # ...
+      # <%= koala_registration_form("/registration", [{:name => "name"}, {:name => "password", :view => "not_prefilled"}, {:name => "birthday", :description => "Birthday", :type => "date"}], "callback_function", 600) %>
+      # ...
+      #
+      def koala_registration_form(registration_url = "/", fields = [:name, :email, :password], on_validate = nil, width = nil)
+        width = (width.present?) ? "width=\"#{width.to_s}\" " : ""
+        on_validate = (on_validate.present?) ? "onvalidate=\"#{on_validate}\" " : ""
+        "<fb:registration 
+          fields=\"#{fields.to_json}\" 
+          redirect-uri=\"#{registration_url}\" 
+          #{on_validate}
+          #{width}>
+        </fb:registration>"
+      end
+      
 
       # Returns the Login To Facebook button.
       # 
@@ -47,8 +66,9 @@ module Devise #:nodoc:
       # ...
       # <%= koala_login_button("Login with Facebook", "/after_login") %>
       #
-      def koala_login_button(button_text = "Login with Facebook", login_url = "/")
-        "<fb:login-button onlogin=\"window.location.href = '#{login_url}';\">#{button_text}</fb:login-button>"
+      def koala_login_button(button_text = "Login with Facebook", login_url = "/", registration_url = nil)
+        registration = (registration_url.present?) ? "registration-url=\"#{registration_url}\"" : ""
+        "<fb:login-button #{registration} on-login=\"window.location.href = '#{login_url}';\">#{button_text}</fb:login-button>"
       end
       
 
