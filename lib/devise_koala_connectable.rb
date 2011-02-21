@@ -29,7 +29,8 @@ module Devise
   
 end
 
-I18n.load_path.unshift File.join(File.dirname(__FILE__), *%w[devise_koala_connectable locales *.yml])
+I18n.load_path.unshift File.join(File.dirname(__FILE__), *%w[devise_koala_connectable locales en.yml])
+I18n.load_path.unshift File.join(File.dirname(__FILE__), *%w[devise_koala_connectable locales de.yml])
 
 Devise.add_module(:koala_connectable,
   :strategy => true,
