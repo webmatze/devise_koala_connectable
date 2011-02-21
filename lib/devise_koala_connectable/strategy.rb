@@ -25,6 +25,8 @@ module Devise #:nodoc:
             oauth = Koala::Facebook::OAuth.new(klass.koala_app_id, klass.koala_secret_key, klass.koala_callback_url)
             
             user_info = oauth.get_user_info_from_cookies(request.cookies)
+            if !user_info pass #if no facebook Session found
+              
             Rails.logger.debug user_info.to_yaml
 
             graph = Koala::Facebook::GraphAPI.new(user_info["access_token"])
