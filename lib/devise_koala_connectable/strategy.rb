@@ -27,11 +27,8 @@ module Devise #:nodoc:
             user_info = oauth.get_user_info_from_cookies(request.cookies)
               
             Rails.logger.debug "user_info: #{user_info.to_yaml}"
-            
-            if !user_info #if no valid facebook Session found
-              pass
-              return
-            end
+
+            pass and return unless user_info #if no valid facebook Session found
 
             graph = Koala::Facebook::GraphAPI.new(user_info["access_token"])
             koala_user = graph.get_object(user_info["uid"])

@@ -1,0 +1,4 @@
+de:
+  devise:
+    sessions:
+      koala_invalid: "Login nicht möglich. Benutzer nicht gefunden."
