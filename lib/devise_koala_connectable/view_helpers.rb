@@ -45,15 +45,16 @@ module Devise #:nodoc:
       # 
       # For example :
       # ...
-      # <%= koala_registration_form("/registration", [{:name => "name"}, {:name => "password", :view => "not_prefilled"}, {:name => "birthday", :description => "Birthday", :type => "date"}], "callback_function", 600) %>
+      # <%= koala_registration_form("/registration", [{:name => "name"}, {:name => "password", :view => "not_prefilled"}, {:name => "birthday", :description => "Geburtstag", :type => "date"}], "callback_function", "de_DE", 600) %>
       # ...
       #
-      def koala_registration_form(registration_url = "/", fields = [:name, :email, :password], on_validate = nil, width = nil)
+      def koala_registration_form(registration_url = "/", fields = [:name, :email, :password], on_validate = nil, locale = "en_EN", width = nil)
         width = (width.present?) ? "width=\"#{width.to_s}\" " : ""
         on_validate = (on_validate.present?) ? "onvalidate=\"#{on_validate}\" " : ""
         "<fb:registration 
-          fields=\"#{fields.to_json}\" 
+          fields='" + fields.to_json + "' 
           redirect-uri=\"#{registration_url}\" 
+          locale=\"#{locale}\" 
           #{on_validate}
           #{width}>
         </fb:registration>"
