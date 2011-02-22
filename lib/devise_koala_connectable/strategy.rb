@@ -11,7 +11,7 @@ module Devise #:nodoc:
       class KoalaConnectable < Base
 
         def valid?
-          (valid_controller? || signed_request?) && mapping.to.respond_to?('authenticate_with_koala')
+          ((valid_controller? && cookie_present?) || signed_request?) && mapping.to.respond_to?('authenticate_with_koala')
         end
 
         # Authenticate user with Koala.
@@ -25,12 +25,18 @@ module Devise #:nodoc:
             
             if signed_request?
               user_info = oauth.parse_signed_request params[:signed_request]
-              pass and return unless user_info #if no valid signed facebook request  found
+              unless user_info.present? #if no valid signed facebook request  found
+                pass
+                return
+              end
               user_id = user_info["user_id"]
               access_token = user_info["oauth_token"]
             else
               user_info = oauth.get_user_info_from_cookies(request.cookies)
-              pass and return unless user_info #if no valid facebook Session found
+              unless user_info.present? #if no valid facebook Session found
+                pass
+                return
+              end
               user_id = user_info["uid"]
               access_token = user_info["access_token"]
             end
@@ -42,7 +48,10 @@ module Devise #:nodoc:
             
             Rails.logger.debug koala_user.to_yaml
 
-            fail(:koala_invalid) and return unless koala_user
+            unless koala_user
+              fail(:koala_invalid)
+              return 
+            end
             
             if user = klass.authenticate_with_koala(koala_user)
               user.on_before_koala_success(koala_user)
@@ -50,7 +59,10 @@ module Devise #:nodoc:
               return
             end
             
-            fail(:koala_invalid) and return unless klass.koala_auto_create_account? or signed_request?
+            unless klass.koala_auto_create_account? or signed_request?
+              fail(:koala_invalid)
+              return 
+            end
             
             user = klass.new
             user.store_koala_credentials!(koala_user)
@@ -70,6 +82,13 @@ module Devise #:nodoc:
         protected
           def valid_controller?
             params[:controller].to_s =~ /sessions/
+          end
+          
+          def cookie_present?
+            klass = mapping.to
+            raise StandardError, "No api_key or secret_key defined, please see the documentation of Koala gem to setup it." unless klass.koala_app_id.present? and klass.koala_secret_key.present?
+            oauth = Koala::Facebook::OAuth.new(klass.koala_app_id, klass.koala_secret_key, klass.koala_callback_url)
+            oauth.get_user_info_from_cookies(request.cookies).present?
           end
           
           def signed_request?
