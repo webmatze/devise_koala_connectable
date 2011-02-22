@@ -40,7 +40,7 @@ module Devise #:nodoc:
         </script>"
       end
       
-      # Renders the Facbook Registration Form.
+      # Renders the Facbook Registration Form (XFML).
       # For more info: http://developers.facebook.com/docs/plugins/registration/
       # 
       # For example :
@@ -58,6 +58,32 @@ module Devise #:nodoc:
           #{on_validate}
           #{width}>
         </fb:registration>"
+      end
+      
+      # Renders the Facbook Registration Form (Iframe).
+      # For more info: http://developers.facebook.com/docs/plugins/registration/
+      # 
+      # For example :
+      # ...
+      # <%= koala_registration_iframe_form("/registration", [{:name => "name"}, {:name => "password", :view => "not_prefilled"}, {:name => "birthday", :description => "Geburtstag", :type => "date"}], "de_DE", 600, 400) %>
+      # ...
+      #
+      def koala_registration_iframe_form(registration_url = "/", fields = [:name, :email, :password], locale = "en_EN", width = "100%", height = 330)
+        width = (width.present?) ? "width=\"#{width.to_s}\" " : ""
+        height = (height.present?) ? "height=\"#{height.to_s}\" " : ""
+        on_validate = (on_validate.present?) ? "onvalidate=\"#{on_validate}\" " : ""
+        "<iframe src='http://www.facebook.com/plugins/registration.php?
+                     client_id=#{Devise::koala_app_id}&
+                     redirect_uri=#{CGI.escape(registration_url)}&
+                     locale=#{locale}&
+                     fields=" + fields.to_json + "'
+                scrolling=\"auto\" 
+                frameborder=\"no\" 
+                style=\"border:none\" 
+                allowTransparency=\"true\" 
+                #{width}
+                #{height}>
+        </iframe>"
       end
       
 
