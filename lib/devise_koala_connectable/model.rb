@@ -75,7 +75,7 @@ module Devise #:nodoc:
       def on_before_koala_success(koala_user)
         self.send(:before_koala_success, koala_user) if self.respond_to?(:before_koala_success)
       end
-      
+
       # Hook that gets called before the auto creation of the user.
       # Therefore, this hook is only called when koala_auto_create_account config option is enabled.
       # Useful for fetching additional user info (etc.) from Facebook.

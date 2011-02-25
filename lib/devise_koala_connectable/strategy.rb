@@ -22,7 +22,7 @@ module Devise #:nodoc:
           raise StandardError, "No api_key or secret_key defined, please see the documentation of Koala gem to setup it." unless klass.koala_app_id.present? and klass.koala_secret_key.present?
           begin
             oauth = Koala::Facebook::OAuth.new(klass.koala_app_id, klass.koala_secret_key, klass.koala_callback_url)
-            
+
             if signed_request?
               user_info = oauth.parse_signed_request params[:signed_request]
               unless user_info.present? #if no valid signed facebook request  found
@@ -40,57 +40,57 @@ module Devise #:nodoc:
               user_id = user_info["uid"]
               access_token = user_info["access_token"]
             end
-              
+
             Rails.logger.debug "user_info: #{user_info.to_yaml}"
 
             graph = Koala::Facebook::GraphAPI.new(access_token)
             koala_user = graph.get_object(user_id)
-            
+
             Rails.logger.debug koala_user.to_yaml
 
             unless koala_user
               fail(:koala_invalid)
-              return 
+              return
             end
-            
+
             if user = klass.authenticate_with_koala(koala_user)
               user.on_before_koala_success(koala_user)
               success!(user)
               return
             end
-            
+
             unless klass.koala_auto_create_account? or signed_request?
               fail(:koala_invalid)
-              return 
+              return
             end
-            
+
             user = klass.new
             user.store_koala_credentials!(koala_user)
             koala_user["registration"] = user_info if signed_request?
             user.on_before_koala_auto_create(koala_user)
-            
+
             user.save(:validate => false)
             user.on_before_koala_success(koala_user)
             success!(user)
-            
+
           rescue Exception => e
             Rails.logger.error e.to_yaml
             fail(:koala_invalid)
           end
         end
-        
+
         protected
           def valid_controller?
             params[:controller].to_s =~ /sessions/
           end
-          
+
           def cookie_present?
             klass = mapping.to
             raise StandardError, "No api_key or secret_key defined, please see the documentation of Koala gem to setup it." unless klass.koala_app_id.present? and klass.koala_secret_key.present?
             oauth = Koala::Facebook::OAuth.new(klass.koala_app_id, klass.koala_secret_key, klass.koala_callback_url)
             oauth.get_user_info_from_cookies(request.cookies).present?
           end
-          
+
           def signed_request?
             params[:signed_request].present?
           end

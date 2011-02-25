@@ -1,7 +1,29 @@
-v0.1.3. changed logging from info to debug. Added logout_button helper. Removed valid_params? method.
+== 0.1.3
 
-v0.1.2. changed strings to symbols and other minor bugfixes
+* enhancements
+	* changed logging from info to debug. 
+	* Added logout_button helper.
+	* Added user creation through Facebook Registration form
+	* Added koala_registration_form helper
+	* Added koala_registration_iframe_form helper
+	* login button now  accepts an callback url
+	* Removed valid_params? method.
+	
+* bug fix
+	* many minor bugfixes
 
-v0.1.1. some minor bugfixes
+== 0.1.2
 
-v0.1.0. initial Version, basic features (yanked)
+* bug fix
+	* changed strings to symbols
+	* other minor bugfixes
+
+== 0.1.1 
+
+* bug fix
+	* some minor bugfixes
+
+== 0.1.0 (yanked)
+
+* enhancements
+	* initial Version, basic features 
