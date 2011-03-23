@@ -11,7 +11,7 @@ module Devise #:nodoc:
       class KoalaConnectable < Base
 
         def valid?
-          ((valid_controller? && cookie_present?) || signed_request?) && mapping.to.respond_to?('authenticate_with_koala')
+          ((valid_controller? && cookie_present? && koala_request?) || signed_request?) && mapping.to.respond_to?('authenticate_with_koala')
         end
 
         # Authenticate user with Koala.
@@ -49,7 +49,7 @@ module Devise #:nodoc:
             Rails.logger.debug koala_user.to_yaml
 
             unless koala_user
-              fail(:koala_invalid)
+              fail!(:koala_invalid)
               return
             end
 
@@ -60,7 +60,7 @@ module Devise #:nodoc:
             end
 
             unless klass.koala_auto_create_account? or signed_request?
-              fail(:koala_invalid)
+              fail!(:koala_invalid)
               return
             end
 
@@ -75,7 +75,7 @@ module Devise #:nodoc:
 
           rescue Exception => e
             Rails.logger.error e.to_yaml
-            fail(:koala_invalid)
+            fail!(:koala_invalid)
           end
         end
 
@@ -93,6 +93,10 @@ module Devise #:nodoc:
 
           def signed_request?
             params[:signed_request].present?
+          end
+
+          def koala_request?
+            params[:koala].present?
           end
 
       end

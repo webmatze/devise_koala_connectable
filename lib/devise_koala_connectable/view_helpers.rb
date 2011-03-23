@@ -94,6 +94,7 @@ module Devise #:nodoc:
       # <%= koala_login_button("Login with Facebook", "/after_login") %>
       #
       def koala_login_button(button_text = "Login with Facebook", login_url = "/", registration_url = nil)
+        login_url += (login_url =~ /\?/ ? '&koala=true' : '?koala=true')
         registration = (registration_url.present?) ? "registration-url=\"#{registration_url}\"" : ""
         "<fb:login-button #{registration} on-login=\"window.location.href = '#{login_url}';\">#{button_text}</fb:login-button>"
       end
